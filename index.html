@@ -1,5 +1,5 @@
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +9,96 @@
     <title>Form Verfication</title>
 </head>
 <body>
-    <div class="container col-6 bg-dark">
-        <form>
+    <div class="container">
+        
+      <div class="row">
+        <div class="col-md-6 bg-dark rounded-left">
+          <h1 class="display-4 text-light text-center mt-4 mb-4">Welcome Adventurer!</h1>
+          <p class="text-center text-white">Are you ready to do lots of cool stuff? Look no further, you're in the right place. Create an account and dive on in.</p>
+        </div>
+        <div class="col-md-6 bg-light rounded-right">
+          <h1 class="display-4 text-center m-4">Create an Account</h1>
+          <p class="text-center">Complete the required fields then click "SUBMIT".
+          <form>
             <div class="form-group">
-                <label for="fname" class="text-light">First Name:</label>
+                <label for="fname">First Name:</label>
                 <input class="form-control" type="text" id="fname">
             </div>
             <div class="form-group">
-                <label for="lname" class="text-light">Last Name:</label>
+                <label for="lname">Last Name:</label>
                 <input class="form-control" type="text" id="lname">
             </div>
             <div class="form-group">
-                <label for="email" class="text-light">Email:</label>
-                <input class="form-control" type="text" id="email">
+                <label for="email">Email:</label>
+                <input class="form-control" type="text" id="email" placeholder="example@example.com">
             </div>
             <div class="form-group">
-                <label for="DOB" class="text-light">Date of birth:</label>
-                <input class="form-control" type="date" id="DOB">
+                <label for="password">Password:</label>
+                <input class="form-control" type="password" id="password">
             </div>
-        </form>
+            <div class="form-group">
+              <label for="confirm-password">Confirm password:</label>
+              <input class="form-control" type="password" id="confirm-password">
+            </div>
+            <div class="form-group">
+              <button class="form-control btn-secondary" type="submit" id="submit">SUBMIT</button>
+            </div>
+          </form>
+        </div> 
+      </div>
     </div>
+    <script>
+
+      // SET SUBMIT BUTTON TO BE DISABLED BY DEFAULT
+
+      document.getElementById('submit').disabled = true;
+
+  
+
+      // VALIDATE FIELDS WITH 'REQUIRED' MESSAGE
+
+      // Add event listeners to input fields
+      let inputs = document.querySelectorAll('.form-control');
+      inputs.forEach((input) => input.addEventListener('blur', function (e) {
+
+        // If nothing is entered AND there's currently no message saying 'Required'
+        if (!e.target.value && !e.target.nextElementSibling) {
+          // Then display 'Required' message
+          e.target.insertAdjacentHTML('afterEnd', "<span class='text-danger'>Required</span>");
+        } 
+
+        // If nothing is entered AND there is a message saying 'Required'
+        if (!e.target.value && e.target.nextElementSibling.innerText === 'Required') {
+          // Continue to display message
+            e.target.nextElementSibling.display = 'block';
+        } else if (e.target.nextElementSibling) {
+          // Otherwise, something must've been entered so remove the message
+          e.target.nextElementSibling.remove();
+        }
+      }))
+
+
+      // VALIDATE PASSWORD AND CONFIRM PASSWORD SO THAT THE ENTERED VALUES MATCH
+
+      // Add event listeners to both password field
+      let passwordInputs = document.querySelectorAll('[type="password"]');
+      passwordInputs.forEach((input) => input.addEventListener('blur', function (e) {
+
+        let pass = document.getElementById('password');
+        let confirmPass = document.getElementById('confirm-password');
+
+        if (pass.value && confirmPass.value && pass.value !== confirmPass.value) {
+          if (e.target.nextElementSibling) {
+            e.target.nextElementSibling.remove();
+          } else if (!confirmPass.nextElementSibling) {
+            confirmPass.insertAdjacentHTML('afterEnd', "<span class='text-danger'>Passwords must match</span>");
+          }
+        } else if (pass.value === '' || confirmPass.value === '' && confirmPass.innerText === 'Passwords must match') {
+            confirmPass.nextElementSibling.remove();
+        }
+      }))
+
+
+    </script>
 </body>
 </html>
